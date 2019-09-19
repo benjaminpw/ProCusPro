@@ -9,12 +9,28 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    
+    
+    
+    @IBOutlet weak var segmentSwitch: UISegmentedControl!
+    @IBOutlet weak var focusContView: UIView!
+    @IBOutlet weak var moveContView: UIView!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
     }
-
-
+    
+    @IBAction func segmentContAction(_ sender: UISegmentedControl) {
+        
+        
+        if sender.selectedSegmentIndex==0 {
+            focusContView.alpha=1.0
+            moveContView.alpha = 0.0
+        }else{
+            focusContView.alpha = 0.0
+            moveContView.alpha = 1.0
+        }
+    }
 }
 

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,6 +16,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        UITabBar.appearance().barTintColor = .black
+        UITabBar.appearance().tintColor = .red
         // Override point for customization after application launch.
         return true
     }
@@ -27,6 +30,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        
+        let center = UNUserNotificationCenter.current()
+        
+        center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
+        }
+        
+        // Step 2: Create the notification content
+        let content = UNMutableNotificationContent()
+        content.title = "Go back to Procus app"
+        content.body = "Go back to Procus app immidiately, else you will lose your focus"
+        
+        // Step 3: Create the notification trigger
+        let date = Date().addingTimeInterval(1)
+        let dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+        // Step 4: Create the request
+        
+        let uuidString = UUID().uuidString
+        
+        let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
+        
+        // Step 5: Register the request
+        center.add(request) { (error) in
+            // Check the error parameter and handle any errors
+        }
+    }
+
+        
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -42,5 +74,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 
-}
 
